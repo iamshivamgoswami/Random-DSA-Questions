@@ -2,9 +2,9 @@ import collections
 
 
 class uf:
-    def __init__(self,n):
-        self.parent=[i for i in range(10000)]
-        self.rank=[1 for i in range(10000)]
+    def __init__(self):
+        self.parent=[i for i in range(10001)]
+        self.rank=[1 for i in range(10001)]
 
     def find(self,x):
         if not self.parent[x]==x:
@@ -42,3 +42,4 @@ class Solution(object):
         for email in em_to_name:
             ans[a.find(em_to_id[email])].append(email)
         return [[em_to_name[v[0]]] + sorted(v) for v in ans.values()]
+
