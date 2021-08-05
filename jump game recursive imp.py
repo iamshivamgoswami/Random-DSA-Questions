@@ -7,6 +7,6 @@ class Solution:
             longest_jump=min(pos+nums[pos],len(nums)-1)
             for i in range(pos+1,longest_jump+1):
                 if func(i):
-                    return 1+min(func)
+                    return True
             return False
         return func()
