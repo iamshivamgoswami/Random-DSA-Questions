@@ -1,32 +1,10 @@
-import heapq
-
-
 class Solution:
-    def kthSmallest(self, matrix, k):
-
-        # The size of the matrix
-        N = len(matrix)
-
-        # Preparing our min-heap
-        minHeap = []
-        for r in range(min(k, N)):
-            # We add triplets of information for each cell
-            minHeap.append((matrix[r][0], r, 0))
-        print(minHeap)
-        # Heapify our list
-        heapq.heapify(minHeap)
-
-        # Until we find k elements
-        while k:
-
-            # Extract-Min
-            element, r, c = heapq.heappop(minHeap)
-
-            # If we have any new elements in the current row, add them
-            if c < N - 1:
-                heapq.heappush(minHeap, (matrix[r][c + 1], r, c + 1))
-
-            # Decrement k
-            k -= 1
-
-        return element
+    def triangleNumber(self, nums):
+        c=0
+        n=len(nums)
+        nums.sort()
+        for i in range(n-1,-1,-1):
+            lo=0
+            hi=i-1
+            while lo<hi:
+                if nums[hi]+nums[lo]>nums[i]
