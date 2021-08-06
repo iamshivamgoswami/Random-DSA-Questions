@@ -1,22 +1,19 @@
-class Solution(object):
-    def canJump(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: bool
-        """
-        length = len(nums)
-        dp = [0] * length
-
-        dp[0] = nums[0]
-
-        for i in range(1, length - 1):
-
-            if dp[i - 1] < i:
-                return False
-
-            dp[i] = max(i + nums[i], dp[i - 1])
-
-            if dp[i] >= length - 1:
-                return True
-
-        return dp[length - 2] >= length - 1
+class Solution:
+    def jump(self, nums: list) -> int:
+        l = len(nums)
+        visited =[False for i in range(l)]
+        if l <= 1:
+            return 0
+        queue = list()
+        #adding a tuple to queue (value at index, index, jumps to reach index)
+        queue.append((nums[0], 0, 1))
+        while queue:
+            max_jump, index, total_jump = queue.pop(0)
+            for i in range(max_jump, -1, -1):
+                if index + i >= l - 1:
+                    return total_jump
+                #checking if this index is already reached before or not
+                elif visited[index+i] is False :
+                    #adding newly reached index to queue and increasing the jump by 1
+                    queue.append((nums[index + i], index + i, total_jump + 1))
+                    visited[index+i] = True

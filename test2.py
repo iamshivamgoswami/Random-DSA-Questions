@@ -1,10 +1,12 @@
+import math
 class Solution:
-    def triangleNumber(self, nums):
-        c=0
+    def jump(self, nums):
+        dp=[math.inf]*len(nums)
+        dp[0]=0
         n=len(nums)
-        nums.sort()
-        for i in range(n-1,-1,-1):
-            lo=0
-            hi=i-1
-            while lo<hi:
-                if nums[hi]+nums[lo]>nums[i]
+
+        for i in range(1,n):
+            for j in range(i):
+                if nums[j]+j>=i:
+                    dp[i]=min(dp[j]+1,dp[i])
+        return dp[-1]
