@@ -1,21 +1,19 @@
-import collections
-import heapq
+import math
 
 
 class Solution:
+    def shortestDistance(self, wordsDict: List[str], word1: str, word2: str) -> int:
+        one=None
+        two=None
+        ans=math.inf
+        for  i,v in enumerate(wordsDict):
+            if v==word1:
+                one=i
+            if v==word2:
+                two=i
 
-    def maxResult(self, nums: List[int], k: int) -> int:
-        n=len(nums)
-        dp=[0]*n
-        dp[0]=nums[0]
-        q=collections.deque([nums[0],0])
-        for i in range(1,n):
-            dp[i]=nums[i]+q[0][0]
-            while q and q[-1][0]<dp[i]:
-                q.pop()
-            q.append(dp[i],i)
-            while i-k==q[0][1]:
-                q.popleft()
+            if one!=None and two!=None:
+                
+                ans=min(abs(one-two),ans)
 
-        return dp[n-1]
-
+        return ans
