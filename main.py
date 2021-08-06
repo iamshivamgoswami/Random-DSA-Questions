@@ -1,21 +1,20 @@
-import collections
+import heapq
 
 
 class Solution:
-    def jump(self, nums: list) -> int:
-        n=len(nums)
-        visited=[False for i in range(n)]
-        if n<=1:
-            return 0
-        q=collections.deque()
-        q.append((nums[0],0,1))
-        while q:
-            max_jump,index,total_jump=q.popleft()
-            for i in range(max_jump,-1,-1):
 
-                if index + i >= n - 1:
-                    return total_jump
-                elif visited[index + i] == False:
-                    q.append((nums[index + i], index + i, total_jump + 1))
-                    visited[index + i] = True
+    def maxResult(self, nums: List[int], k: int) -> int:
+        n=len(nums)
+        dp=[0]*n
+        dp[0]=nums[0]
+        h=[]
+        heapq.heappush(h,(-nums[0],0))
+        for i in range(1,n):
+            while h[0][1]+k<i:
+                heapq.heappop(h)
+            dp[i]=nums[i]+dp[h[0][1]]
+            heapq.heappush(h,(-dp[i],i))
+
+        return dp[-1]
+
 
