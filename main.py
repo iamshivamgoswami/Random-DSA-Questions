@@ -1,23 +1,18 @@
-def GCD(a,b):
-    if b==0:
-        return a
-    return (b,a%b)
-def left_rotate(arr,d,n):
-    d=d%n
-    gcd=GCD(d,n)
-    for i in range(len(gcd)):
-        j=i
-        tmp=arr[i]
-        while 1:
-            k=j+d
-            if k>=n:
-                k=k-n
-            if k==i:
-                break
-            arr[j]=arr[k]
-            j=k
-        arr[j]=tmp
+class Solution:
+    def closestCost(self, baseCosts: List[int], toppingCosts: List[int], target: int) -> int:
 
-arr=[1,2,3,4,5,6,7,8,9,10,11,12]
-left_rotate(arr,3,len(arr))
-print(arr)
+        def func(curr,toppingCosts,index,target):
+            nonlocal result
+            if abs(target-curr)<abs(target-result) or abs(target-curr)==abs(target-result) and curr<result:
+                result=curr
+            if index==len(toppingCosts) or curr>=target:
+                return
+            func(curr,toppingCosts,index+1,target)
+            func(curr+toppingCosts[index], toppingCosts, index + 1, target)
+            func(curr+toppingCosts[index]*2, toppingCosts, index + 1, target)
+
+        result = baseCosts[0]
+
+        for i in baseCosts:
+            func(i,toppingCosts,0,target)
+        return result
