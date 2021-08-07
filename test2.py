@@ -1,19 +1,10 @@
-import math
-
-
 class Solution:
-    def shortestDistance(self, wordsDict: List[str], word1: str, word2: str) -> int:
-        one=None
-        two=None
-        ans=math.inf
-        for  i,v in enumerate(wordsDict):
-            if v==word1:
-                one=i
-            if v==word2:
-                two=i
-
-            if one!=None and two!=None:
-                
-                ans=min(abs(one-two),ans)
-
-        return ans
+    def numWays(self, n: int, k: int) -> int:
+        num_ways=[0]*(n+1)
+        if n==0:
+            return 0
+        num_ways[1]=k
+        num_ways[2]=k**2
+        for i in range(3,n+1):
+            num_ways[i]=num_ways[i-1]*(k-1)+1*(k-1)*num_ways[i-2]
+        return num_ways[-1]
