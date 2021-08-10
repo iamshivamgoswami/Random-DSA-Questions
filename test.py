@@ -1,28 +1,20 @@
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
 class Solution:
-    def closestValue(self, root: Optional[TreeNode], target: float) -> int:
-        minn = [math.inf, None]
+    def threeSumSmaller(self, nums, target):
+        summ = 0
+        nums.sort()
 
-        def func(node):
-            nonlocal minn
-            if not node:
-                return
-            a, b = minn[0], minn[1]
+        def func(nums, left, target):
+            right = len(nums) - 1
+            summ = 0
+            while left < right:
+                if nums[left] + nums[right] < target:
+                    summ += right - left
 
-            if abs(node.val - target) < a:
-                minn = [abs(node.val - target), node.val]
+                    left += 1
+                else:
+                    right -= 1
+            return summ
 
-            if node.val < target:
-
-                func(node.right)
-            else:
-                func(node.left)
-
-        func(root)
-
-        return minn[1]
+        for i in range(len(nums) - 2):
+            summ += func(nums, i + 1, target - nums[i])
+        return summ
