@@ -1,20 +1,21 @@
-class Solution:
-    def threeSumSmaller(self, nums, target):
-        summ = 0
+class Solution(object):
+    def triangleNumber(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
         nums.sort()
-
-        def func(nums, left, target):
-            right = len(nums) - 1
-            summ = 0
-            while left < right:
-                if nums[left] + nums[right] < target:
-                    summ += right - left
-
-                    left += 1
-                else:
-                    right -= 1
-            return summ
-
-        for i in range(len(nums) - 2):
-            summ += func(nums, i + 1, target - nums[i])
-        return summ
+        ans = 0
+        L = len(nums)
+        # c < (a+b)
+        for i in range(L - 1, 1, -1):
+            c = nums[i]
+            start = 0
+            end = i - 1
+            while start < end:
+                if nums[start] + nums[end] > c:
+                    ans += end - start
+                    end -= 1
+                elif nums[start] + nums[end] <= c:
+                    start += 1
+        return ans
