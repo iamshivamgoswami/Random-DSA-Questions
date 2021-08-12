@@ -1,22 +1,16 @@
-import math
 class Solution:
-    def largestBSTSubtree(self, root: Optional[TreeNode]) -> int:
-        self.res=0
-        def func(node):
-            if not node:
-                return math.inf ,-math.inf ,0
-            lmin,lmax,lnum=func(node.left)
-            rmin,rmax,rnum=func(node.right)
-            n=0
-            if node.val>lmax and node.val<rmin:
-                n=lnum+rnum+1
-                self.res=max(self.res,n)
-            return min(node.val,lmin),max(node.val,rmax),n
+    def lexicalOrder(self, n: int) -> List[int]:
+        ans = []
 
-        func(root)
-        return self.res
+        def dfs(start,end):
+            if start>end:
+                return
+            ans.append(start)
+            for i in range(0,10):
+                if 10*start+i>end:
+                    return
+                dfs(10*start+i,end)
+        for i in range(1,10):
+            dfs(i,n)
 
-
-
-
-
+        return ans
