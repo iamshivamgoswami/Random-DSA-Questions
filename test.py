@@ -1,19 +1,31 @@
-
 class Solution:
+    def findMaxConsecutiveOnes(self, nums: List[int]) -> int:
+        def func(nums):
 
-    def largestBSTSubtree(self, root: TreeNode) -> int:
-        self.re s =0
-        def func(node):
+            left, right = 0, 0
+            count = 0
+            maxx = 0
+            if len(nums) == 1:
+                return nums[0] == 1
+            while right < len(nums):
+                if nums[right] == 0:
+                    count += 1
+                if count == 2:
+                    maxx = max(maxx, right - left)
+                    left = right
+                    count = 1
+                right += 1
+            if count <= 2:
+                maxx = max(right - left, maxx)
+            return maxx
 
-            if not node:
-                return math.inf, -math.inf ,0
-            lmin, lmax, lnum = func(node.left)
-            rmin, rmax, rnum = func(node.right)
-            n = -math.inf
-            if node.val > lmax and node.val < rmin:
-                n = lnum + rnum + 1
-                self.res = max(self.res, n)
-            return min(node.val, lmin), max(node.val, rmax), n
+        return func(nums)
 
-        func(root)
-        return self.res
+
+
+
+
+
+
+
+
