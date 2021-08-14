@@ -1,21 +1,37 @@
 class Solution:
-    def find132pattern(self, nums: List[int]) -> bool:
-        n=len(nums)
-        if n<3:
-            return False
-        min_array=[-1]*n
-        min_array[0]=nums[0]
-        for i in range(1,n):
-            min_array[i]=min(nums[i],min_array[i-1])
-        stack=[]
-        for j in range(n-1,-1,-1):
-            if nums[j]<=min_array[j]:
-                continue
-            while stack and stack[-1]<=min_array[j]:
-                stack.pop()
-            if stack and stack[-1]<nums[j]:
-                return True
-            stack.append(nums[j])
+    def countSubIslands(self, grid1: List[List[int]], grid2: List[List[int]]) -> int:
+        visited=set()
+        def dfs(i,j,grid):
+            visited.add((i,j))
 
-        return False
-    
+            for x,y in [(i+1,j),(i-1,j),(i,j+1),(i,j-1)]:
+                if 0<=x<len(grid) and 0<=y<len(grid[0]) and grid[x][y]==1 and (x,y) not in visited:
+
+                    dfs(x,y)
+
+        for i in range(len(grid1)):
+            for j in range(len(grid1[0])):
+                if grid1[i][j]==1 and (i,j )  not in visited:
+
+                    dfs(i,j,grid1)
+        visited2=set()
+        def dfs2(i, j, grid):
+            visited2.add((i, j))
+
+            for x, y in [(i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1)]:
+                if 0 <= x < len(grid) and 0 <= y < len(grid[0]) and grid[x][y] == 1 and (x, y) not in visited:
+                    dfs2(x, y,grid)
+
+
+        count=0
+        for i in range(len(grid2)):
+            for j in range(len(grid2[0])):
+                if grid2[i][j] == 1 and (i, j) not in visited2:
+                    tmp=[]
+                    dfs2(i,j,grid2)
+                    if tuple(tmp) in visited:
+                        count+=1
+
+        return count
+
+
