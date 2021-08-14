@@ -1,6 +1,11 @@
 class Solution:
     def rearrangeString(self, s: str, k: int) -> str:
-        count = collections.Counter(s)
+        import collections
+
+        s = "aaadbbbcc"
+        count = collections.defaultdict(int)
+        for S in s:
+            count[S] += 1
         stack = sorted(list(count.items()), key=lambda x: x[1])
         print(stack)
         char, count = stack.pop()
@@ -18,8 +23,13 @@ class Solution:
         print(res)
         # padding
         for i, r in enumerate(res):
-            lst[i % (len(lst) - 1)].append(r)
+            lst[i % (len(lst) - 1)].append(r)#Only letters with the
+            # same highest
+            # frequency can go in to the last []
         for l in lst[:-1]:
-            if len(l)<k:
+            if len(l) < k:
                 return ""
-        return("".join("".join(l) for l in lst))
+        print(1)
+        return ( "".join("".join(l) for l in lst))
+
+
