@@ -1,42 +1,31 @@
 class Solution:
-    def countSubIslands(self, grid1, grid2) :
-        visited = set()
 
-        def dfs(i, j, grid):
-            visited.add((i, j))
+    def exist(self,board,word):
+        self.rows=len(board)
+        self.cols=len(board[0])
 
-            for x, y in [(i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1)]:
-                if 0 <= x < len(grid) and 0 <= y < len(grid[0]) and grid[x][y] == 1 and (x, y) not in visited:
-                    dfs(x, y, grid)
+        self.board=board
 
 
-        for i in range(len(grid1)):
-            for j in range(len(grid1[0])):
-                if grid1[i][j] == 1 and (i, j) not in visited:
+        for i in range(self.rows):
+            for j in range(self.cols):
+                if self.func(i,j,word):
+                    return True
 
-                    dfs(i, j, grid1)
+        return False
+
+    def func(self,row,col,suffix):
+        if len(suffix)==0:
+            return True
+        if row<0 or row==self.rows or col<0 or col==self.cols or self.board[row][col]!=suffix[0]:
+            return False
+        self.board[row][col]="#"
+        for x,y in [(row+1,col),(row-1,col),(row,col+1),(row,col-1)]:
+            res=self.func(x,y,suffix[1:])
+            if res:
+                return True
+        self.board[row][col]=suffix[0]
+
+        return False
 
 
-        def dfs2(i, j, grid):
-            visited2.add((i, j))
-            tmp.add((i, j))
-            for x, y in [(i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1)]:
-                if 0 <= x < len(grid) and 0 <= y < len(grid[0]) and grid[x][y] == 1 and (x, y) not in visited2:
-                    dfs2(x, y, grid)
-        visited2 = set()
-        count = 0
-        for i in range(len(grid2)):
-            for j in range(len(grid2[0])):
-                if grid2[i][j] == 1 and (i, j) not in visited2:
-                    tmp = set()
-                    dfs2(i, j, grid2)
-
-                    if visited.intersection(tmp)==tmp:
-                        count += 1
-
-        return count
-A=Solution()
-
-grid1 = [[1,0,1,0,1],[1,1,1,1,1],[0,0,0,0,0],[1,1,1,1,1],[1,0,1,0,1]]
-grid2 = [[0,0,0,0,0],[1,1,1,1,1],[0,1,0,1,0],[0,1,0,1,0],[1,0,0,0,1]]
-print(A.countSubIslands(grid1,grid2))

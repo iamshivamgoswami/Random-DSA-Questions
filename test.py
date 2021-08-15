@@ -1,25 +1,21 @@
 class Solution:
-    def rearrangeString(self, s: str, k: int) -> str:
-        count = collections.Counter(s)
-        stack = sorted(list(count.items()), key=lambda x: x[1])
-        print(stack)
-        char, count = stack.pop()
-        lst = [[char] for _ in range(count)]
-        print(lst)
-        # take care of the letters with same highest freq
-        while stack and stack[-1][1] == count:
-            char, _ = stack.pop()
-            for l in lst:
-                l.append(char)
+    def generateTrees(self, n: int) -> List[TreeNode]:
+        if n==0:
+            return []
+        return self.func(0,n)
 
-        print(lst)
-        # all the characters left
-        res = "".join(c * n for c, n in stack)
-        print(res)
-        # padding
-        for i, r in enumerate(res):
-            lst[i % (len(lst) - 1)].append(r)
-        for l in lst[:-1]:
-            if len(l)<k:
-                return ""
-        return("".join("".join(l) for l in lst))
+    def func(self,start,end):
+        if start>end:
+            return [None]
+        all_nodes=[]
+        for curr_root in range(start,end+1):
+            left_tree=self.func(start,curr_root-1)
+            right_tree=self.func(curr_root+1,end)
+            for l in left_tree:
+                for r in right_tree:
+                    root=TreeNode(curr_root)
+                    root.left=left_tree
+                    root.right=right_tree
+                    all_nodes.append(root)
+
+        return all_nodes
