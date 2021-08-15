@@ -1,21 +1,13 @@
 class Solution:
-    def generateTrees(self, n: int) -> List[TreeNode]:
-        if n==0:
-            return []
-        return self.func(0,n)
+    def subsets(self, s: List[int]) -> List[List[int]]:
+        ans=[]
+        def solve(pos,tmp=[]):
+            ans.append(tmp[:])
+            for i in range(pos,len(s)):
+                tmp.append(s[i])
+                solve(i+1,tmp)
+                tmp.pop()
 
-    def func(self,start,end):
-        if start>end:
-            return [None]
-        all_nodes=[]
-        for curr_root in range(start,end+1):
-            left_tree=self.func(start,curr_root-1)
-            right_tree=self.func(curr_root+1,end)
-            for l in left_tree:
-                for r in right_tree:
-                    root=TreeNode(curr_root)
-                    root.left=left_tree
-                    root.right=right_tree
-                    all_nodes.append(root)
-
-        return all_nodes
+        solve(0)
+        return ans
+    
