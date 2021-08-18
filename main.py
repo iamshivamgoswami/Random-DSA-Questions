@@ -1,40 +1,29 @@
-class Solution:
-    def str2tree(self, s: str) -> TreeNode:
-        return self._str2treeInternal(s, 0)[0]
+def findShortestWay(self, A, ball, hole):
+    ball, hole = tuple(ball), tuple(hole)
+    R, C = len(A), len(A[0])
 
-    def _getNumber(self, s: str, index: int) -> (int, int):
+    def neighbors(r, c):
+        for dr, dc, di in [(-1, 0, 'u'), (0, 1, 'r'),
+                           (0, -1, 'l'), (1, 0, 'd')]:
+            cr, cc, dist = r, c, 0
+            while (0 <= cr + dr < R and
+                   0 <= cc + dc < C and
+                   not A[cr + dr][cc + dc]):
+                cr += dr
+                cc += dc
+                dist += 1
+                if (cr, cc) == hole:
+                    break
+            yield (cr, cc), di, dist
 
-        is_negative = False
+    pq = [(0, '', ball)]
+    seen = set()
+    while pq:
+        dist, path, node = heapq.heappop(pq)
+        if node in seen: continue
+        if node == hole: return path
+        seen.add(node)
+        for nei, di, nei_dist in neighbors(*node):
+            heapq.heappush(pq, (dist + nei_dist, path + di, nei))
 
-        # A negative number
-        if s[index] == '-':
-            is_negative = True
-            index = index + 1
-
-        number = 0
-        while index < len(s) and s[index].isdigit():
-            number = number * 10 + int(s[index])
-            index += 1
-
-        return number if not is_negative else -number, index
-
-    def _str2treeInternal(self, s: str, index: int) -> (TreeNode, int):
-
-        if index == len(s):
-            return None, index
-
-        # Start of the tree will always contain a number representing
-        # the root of the tree. So we calculate that first.
-        value, index = self._getNumber(s, index)
-        node = TreeNode(value)
-
-        # Next, if there is any data left, we check for the first subtree
-        # which according to the problem statement will always be the left child.
-        if index < len(s) and s[index] == '(':
-            node.left, index = self._str2treeInternal(s, index + 1)
-
-        # Indicates a right child
-        if node.left and index < len(s) and s[index] == '(':
-            node.right, index = self._str2treeInternal(s, index + 1)
-
-        return node, index + 1 if index < len(s) and s[index] == ')' else index
+    return "impossible"

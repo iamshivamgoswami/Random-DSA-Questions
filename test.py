@@ -1,25 +1,34 @@
-class Solution:
-    def str2tree(self, s: str) -> TreeNode:
-        return self._str2treeInternal(s, 0)[0]
-    def _getNumber(self,s,index):
-        is_negative=False
-        if s[index]=="-":
-            is_negative=True
-            index=index+1
-        number=0
-        while index<len(s) and s[index].isdigit():
-            number=number*10+int(s[index])
-            index+=1
-        return number if not is_negative else -number,index
+import heapq
 
-    def _str2tree(self,s,index):
-        if index==len(s):
-            return None,index
-        value,index=self._getNumber(s,index)
-        node=TreeNode(val)
-        if index<len(s) and s[index]=="(":
-            node.left,index=self._str2tree(s,index+1)
-        if node.left and index<len(s) and s[index]=="(":
-            node.right,index=self._str2tree(s,index+1)
-        return node,index+1
+
+class Solution:
+    def findShortestWay(self, maze, ball, hole):
+        ball,hole=tuple(ball),tuple(hole)
+        Directions=[(1,0,"d"),(-1,0,"u"),(0,1,"r"),(0,-1,"l")]
+        def go(x,y,direction):
+            xx=x
+            yy=y
+            i,j,path=direction
+            new_dist=0
+            while 0<=xx+i<len(maze) and 0<=yy+j<len(maze[0]) and not maze[xx+i][yy+j]:
+                xx+=i
+                yy+=j
+                new_dist+=1
+                if (xx,yy)==hole:
+                    break
+            return new_dist,path,(xx,yy)
+        h=[(0,"",ball)]
+        seen=set()
+        while h:
+            dis,path,node=heapq.heappop(h)
+            if node in seen:
+                continue
+            if node==hole:
+                return path
+            seen.add(node)
+            for direction in Directions:
+                for distance,path_new,nei in go(*node,direction):
+                    heapq.heappush(h,(distance+dis,path+path_new,nei))
+        return "impossible"
+
 
