@@ -1,18 +1,12 @@
 class Solution:
-
-    def jump(self, nums):
-        n = len(nums)
-        start = 0
-        end = 0
-        max_end = 0
-        step = 0
-        if len(nums) <= 1:
-            return 0
-        while 1:
-            step += 1
-            for i in range(start, end + 1):
-                if i + nums[i] >= n - 1:
-                    return step
-                max_end = max(max_end, i + nums[i])
-            start, end = end + 1, max_end
-
+    def canJump(self, nums: List[int]) -> bool:
+        @functools.lru_cache()
+        def func(pos=0):
+            if pos>=len(nums)-1:
+                return True
+            end=min(pos+nums[pos],len(nums)-1)
+            for i in range(pos+1,end+1):
+                if func(i):
+                    return True
+            return False
+        return func()
